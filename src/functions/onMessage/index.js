@@ -1,3 +1,5 @@
+const { willSendText } = require("../statusChanged");
+
 const onMessages = async (client) => {
   try {
     await client.onMessage((message) => {
@@ -5,78 +7,67 @@ const onMessages = async (client) => {
         const senderName = message.sender.pushname;
         const senderNumber = message.sender.id;
         if (message.type === "chat") {
-          console.log(senderName, senderNumber, message.body);
+          willSendText(client, senderName, senderNumber, false, message.body);
           return;
         }
         if (message.type === "ptt") {
           if (message.mimetype.split("/")[0] === "audio") {
-            console.log(
+            willSendText(
+              client,
               senderName,
               senderNumber,
-              `
-            Você está falando com uma automação! 
-            
-            ${senderName}, infelizmente não conseguiremos processar audios ainda..
+              true,
+              `infelizmente não conseguiremos processar audios ainda..
             `
             );
             return;
           } else {
-            console.log(
+            willSendText(
+              client,
               senderName,
               senderNumber,
-              `
-            Você está falando com uma automação! 
-            
-            ${senderName}, infelizmente não conseguiremos processar essa informação ainda..
-            `
+              true,
+              "infelizmente não conseguiremos processar essa informação ainda.."
             );
             return;
           }
         }
         if (message.type === "image") {
-          console.log(
+          willSendText(
+            client,
             senderName,
             senderNumber,
-            `
-        Você está falando com uma automação! 
-        
-        ${senderName}, infelizmente não conseguiremos processar imagens ainda..
-        `
+            true,
+            "infelizmente não conseguiremos processar imagens ainda.."
           );
           return;
         }
         if (message.type === "video") {
-          console.log(
+          willSendText(
+            client,
             senderName,
             senderNumber,
-            `
-        Você está falando com uma automação! 
-        
-        ${senderName}, infelizmente não conseguiremos processar videos ainda..
-        `
+            true,
+            "infelizmente não conseguiremos processar videos ainda.."
           );
           return;
         }
         if (message.type === "vcard") {
-          console.log(
+          willSendText(
+            client,
             senderName,
             senderNumber,
-            `
-            Você está falando com uma automação! 
-            
-            ${senderName}, infelizmente não conseguiremos processar vcards ainda..
-            `
+            true,
+            "infelizmente não conseguiremos processar vcards ainda.."
           );
           return;
         }
-        console.log(
+        willSendText(
+          client,
           senderName,
           senderNumber,
-          `
-            Você está falando com uma automação! 
-            
-            ${senderName}, infelizmente não conseguiremos processar essa informação ainda..
-            `
+          true,
+          "infelizmente não conseguiremos processar essa informação ainda.."
         );
         return;
       }
