@@ -1,15 +1,21 @@
 const wppconnect = require("@wppconnect-team/wppconnect");
+const { onMessages } = require("./src/functions/onMessage");
 
-const startAPI = async (status) => {
+let phoneStatus = "LOADING";
+const startAPI = async () => {
   wppconnect
     .create(
       "",
-      (base64Qrimg) => {},
+      () => {
+        console.log(`code scan`);
+      },
       (statusSession) => {
-        console.log("mudou sessão");
+        console.log(`Session changed: ${statusSession}`);
+        phoneStatus = statusSession;
+        global.phoneStatus = phoneStatus;
       },
       {
-        session: "betaTest",
+        session: "oi",
         useChrome: false,
         logQR: true,
         browserArgs: [
@@ -32,27 +38,36 @@ const startAPI = async (status) => {
       }
     )
     .then((client) => {
+      global.client = client;
       start(client);
     })
     .catch((erro) => {
       console.log("Erro ao iniciar wc", erro);
     });
   const start = async (client) => {
-    const localStorageData = await client.waPage.evaluate(() => {
-      let json = {};
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        json[key] = localStorage.getItem(key);
-      }
-      return json;
-    });
+    try {
+      //get number by localStorage
+      const localStorageData = await client.waPage.evaluate(() => {
+        let json = {};
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          json[key] = localStorage.getItem(key);
+        }
+        return json;
+      });
 
-    const number = localStorageData["last-wid-md"]
-      .toString()
-      .split(":")[0]
-      .replace('"', "");
+      const number = localStorageData["last-wid-md"]
+        .toString()
+        .split(":")[0]
+        .replace('"', "");
+      global.number = number;
+      //Start wpp automation starts here.
 
-    global.number = number;
+      //getting messages
+      onMessages(client);
+    } catch (error) {
+      console.log("Start error =>", error);
+    }
   };
 };
 module.exports = startAPI;
