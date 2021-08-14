@@ -1,5 +1,6 @@
 const wppconnect = require("@wppconnect-team/wppconnect");
 const { onMessages } = require("./src/functions/onMessage");
+const { statusChanged } = require("./src/functions/statusChanged");
 
 let phoneStatus = "LOADING";
 const startAPI = async () => {
@@ -10,9 +11,9 @@ const startAPI = async () => {
         console.log(`code scan`);
       },
       (statusSession) => {
+        statusChanged(phoneStatus);
         console.log(`Session changed: ${statusSession}`);
         phoneStatus = statusSession;
-        global.phoneStatus = phoneStatus;
       },
       {
         session: "oi",
@@ -27,7 +28,7 @@ const startAPI = async () => {
         disableSpins: true,
         disableWelcome: true,
         createPathFileToken: false,
-        headless: false,
+        headless: true,
         autoClose: false,
         tokenStore: "file",
         devtools: false,
@@ -46,6 +47,7 @@ const startAPI = async () => {
     });
   const start = async (client) => {
     try {
+      console.log("App started");
       //get number by localStorage
       const localStorageData = await client.waPage.evaluate(() => {
         let json = {};

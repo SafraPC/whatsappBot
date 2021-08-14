@@ -1,4 +1,4 @@
-const { willSendText } = require("../statusChanged");
+const { willSendText } = require("../sendText");
 
 const onMessages = async (client) => {
   try {
@@ -17,7 +17,7 @@ const onMessages = async (client) => {
               senderName,
               senderNumber,
               true,
-              `infelizmente não conseguiremos processar audios ainda..
+              `infelizmente não conseguimos processar audios ainda..
             `
             );
             return;
@@ -27,7 +27,7 @@ const onMessages = async (client) => {
               senderName,
               senderNumber,
               true,
-              "infelizmente não conseguiremos processar essa informação ainda.."
+              "infelizmente não conseguimos processar essa informação ainda.."
             );
             return;
           }
@@ -38,7 +38,7 @@ const onMessages = async (client) => {
             senderName,
             senderNumber,
             true,
-            "infelizmente não conseguiremos processar imagens ainda.."
+            "infelizmente não conseguimos processar imagens ainda.."
           );
           return;
         }
@@ -48,7 +48,7 @@ const onMessages = async (client) => {
             senderName,
             senderNumber,
             true,
-            "infelizmente não conseguiremos processar videos ainda.."
+            "infelizmente não conseguimos processar videos ainda.."
           );
           return;
         }
@@ -58,7 +58,7 @@ const onMessages = async (client) => {
             senderName,
             senderNumber,
             true,
-            "infelizmente não conseguiremos processar vcards ainda.."
+            "infelizmente não conseguimos processar vcards ainda.."
           );
           return;
         }
@@ -67,7 +67,7 @@ const onMessages = async (client) => {
           senderName,
           senderNumber,
           true,
-          "infelizmente não conseguiremos processar essa informação ainda.."
+          "infelizmente não conseguimos processar essa informação ainda.."
         );
         return;
       }
