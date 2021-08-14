@@ -2,7 +2,7 @@ const wppconnect = require("@wppconnect-team/wppconnect");
 const { onMessages } = require("./src/functions/onMessage");
 const { statusChanged } = require("./src/functions/statusChanged");
 
-let phoneStatus = "LOADING";
+global.phoneStatus = "LOADING";
 const startAPI = async () => {
   wppconnect
     .create(
@@ -11,12 +11,12 @@ const startAPI = async () => {
         console.log(`code scan`);
       },
       (statusSession) => {
-        statusChanged(phoneStatus);
         console.log(`Session changed: ${statusSession}`);
-        phoneStatus = statusSession;
+        global.phoneStatus = statusSession;
+        statusChanged(statusSession);
       },
       {
-        session: "oi",
+        session: "beta",
         useChrome: false,
         logQR: true,
         browserArgs: [
@@ -28,7 +28,7 @@ const startAPI = async () => {
         disableSpins: true,
         disableWelcome: true,
         createPathFileToken: false,
-        headless: true,
+        headless: false,
         autoClose: false,
         tokenStore: "file",
         devtools: false,
@@ -63,6 +63,7 @@ const startAPI = async () => {
         .split(":")[0]
         .replace('"', "");
       global.number = number;
+
       //Start wpp automation starts here.
 
       //getting messages
